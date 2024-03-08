@@ -299,4 +299,7 @@ public class BuildingDTO extends AbstractDTO{
     public void setMotorbikeFee(String motorbikeFee) {
         this.motorbikeFee = motorbikeFee;
     }
+
+    public void setAddress(String s) {
+    }
 }

@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="/common/taglib.jsp" %>
 <c:url var="buildingListURL" value = "/admin/building-list" />
+<c:url var="buildingAPI" value="/admin/building" />
 <html>
 <head>
     <title>Danh sách tòa nhà</title>
@@ -78,11 +79,10 @@
                                             <div class="col-xs-12">
                                                 <div class="col-sm-2">
                                                     <label class="name">Quận</label>
-                                                    <select class="form-control" name="district">
-                                                        <option value="">--Chọn Quận--</option>
-                                                        <option value="QUAN_1" ${modelSearch.district== "QUAN_1" ? "selected" : ""}>Quận 1</option>
-                                                        <option value=QUAN_2>Quận 2</option>
-                                                    </select>
+                                                    <form:select class="form-control" path="district">
+                                                        <form:option value="">--Chọn Quận--</form:option>
+                                                        <form:options items="${districts}"></form:options>
+                                                    </form:select>
                                                 </div>
                                                 <div class="col-sm-5">
                                                     <label class="name">Phường</label>
@@ -146,11 +146,10 @@
                                                 </div>
                                                 <div class="col-sm-2">
                                                     <label class="name">Nhân viên phụ trách</label>
-                                                    <select class="form-control" name="staffId">
-                                                        <option value="">--Chọn nhân viên--</option>
-                                                        <option value="1">nguyen van a</option>
-                                                        <option value="2">nguyen van b</option>
-                                                    </select>
+                                                    <form:select class="form-control" path="staffId">
+                                                        <form:option value="">--Chọn nhân viên--</form:option>
+                                                        <form:options items="${listStaffs}"/>
+                                                    </form:select>
                                                 </div>
                                             </div>
                                         </div>
@@ -158,15 +157,16 @@
                                         <div class="form-group">
                                             <div class="col-xs-12">
                                                 <div class="col-sm-6">
-                                                    <label class="checkbox-inline">
-                                                        <input type="checkbox" name="typeCode" value="noi-that"> Nội thất
-                                                    </label>
-                                                    <label class="checkbox-inline" name="typeCode" value="nguyen-can">
-                                                        <input type="checkbox"> Nguyên căn
-                                                    </label>
-                                                    <label class="checkbox-inline" name="typeCode" value="tang-tret">
-                                                        <input type="checkbox"> Tầng trệt
-                                                    </label>
+<%--                                                    <label class="checkbox-inline">--%>
+<%--                                                        <input type="checkbox" name="typeCode" value="noi-that"> Nội thất--%>
+<%--                                                    </label>--%>
+<%--                                                    <label class="checkbox-inline" name="typeCode" value="nguyen-can">--%>
+<%--                                                        <input type="checkbox"> Nguyên căn--%>
+<%--                                                    </label>--%>
+<%--                                                    <label class="checkbox-inline" name="typeCode" value="tang-tret">--%>
+<%--                                                        <input type="checkbox"> Tầng trệt--%>
+<%--                                                    </label>--%>
+                                                    <form:checkboxes items="${buildingType}" path="typeCode"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -198,7 +198,7 @@
                                 </svg>
                             </button>
                         </a>
-                        <button class="btn btn-danger" title="Xóa tòa nhà" style="border: 0;">
+                        <button class="btn btn-danger" title="Xóa tòa nhà" style="border: 0;" id="btnDeleteBuilding">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building-dash" viewBox="0 0 16 16">
                                 <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1"/>
                                 <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"/>
@@ -212,7 +212,7 @@
             <!-- Bảng danh sách -->
             <div class="row">
                 <div class="col-xs-12">
-                    <table id="simple-table" class="table table-striped table-bordered table-hover" style="margin: 3em 0 1.5rem;font-family: 'Times New Roman';font-size: smaller">
+                    <table id="tableList" class="table table-striped table-bordered table-hover" style="margin: 3em 0 1.5rem;font-family: 'Times New Roman';font-size: smaller">
                         <thead>
                         <tr>
                             <th class="center">
@@ -261,10 +261,10 @@
                                         <button class="btn btn-xs btn-success" title="Giao tòa nhà" onclick="assignmentBuilding(${item.id})">
                                             <i class="ace-icon glyphicon glyphicon-align-justify"></i>
                                         </button>
-                                        <button class="btn btn-xs btn-info" title="Sửa tòa nhà">
+                                        <a class="btn btn-xs btn-info" title="Sửa tòa nhà" href="/admin/building-edit-${item.id}">
                                             <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                        </button>
-                                        <button class="btn btn-xs btn-danger" title="Xóa tòa nhà">
+                                        </a>
+                                        <button class="btn btn-xs btn-danger" title="Xóa tòa nhà" onclick="deleteBuilding(${item.id})">
                                             <i class="ace-icon fa fa-trash-o bigger-120"></i>
                                         </button>
                                     </div>
@@ -299,18 +299,18 @@
                     </thead>
 
                     <tbody>
-                    <tr>
-                        <td class="center">
-                            <input type="checkbox" id="checkbox_1" value="1" checked>
-                        </td>
-                        <td>Nguyen Van A</td>
-                    </tr>
-                    <tr>
-                        <td class="center">
-                            <input type="checkbox" id="checkbox_2" value="2" checked>
-                        </td>
-                        <td>Nguyen Van B</td>
-                    </tr>
+<%--                    <tr>--%>
+<%--                        <td class="center">--%>
+<%--                            <input type="checkbox" id="checkbox_1" value="1" checked>--%>
+<%--                        </td>--%>
+<%--                        <td>Nguyen Van A</td>--%>
+<%--                    </tr>--%>
+<%--                    <tr>--%>
+<%--                        <td class="center">--%>
+<%--                            <input type="checkbox" id="checkbox_2" value="2" checked>--%>
+<%--                        </td>--%>
+<%--                        <td>Nguyen Van B</td>--%>
+<%--                    </tr>--%>
                     </tbody>
                 </table>
                 <input type="hidden" id="buildingId" name="buildingId" value="">
@@ -326,6 +326,7 @@
 <script>
     function assignmentBuilding(buildingId){
         $('#assignmentBuildingModal').modal();
+        loadStaff(buildingId);
         $("#buildingId").val(buildingId);
         $('#btnAssignmentBuilding').click(function(e){
             e.preventDefault();
@@ -335,7 +336,49 @@
                 return $(this).val();
             }).get();
             data["staffs"] = staffs;
-            console.log("OK");
+            assignment(data);
+        });
+    }
+
+    function assignment(data){
+        $.ajax({
+            type: "Post",
+            url: "${buildingAPI}/assignment",
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType: "JSON",
+            success: function (respond){
+                console.log("Success");
+            },
+            error: function (respond){
+                console.log("Failed");
+                console.log(respond);
+            }
+        });
+    }
+
+    function loadStaff(buildingId){
+        $.ajax({
+            type: "Get",
+            url: "${buildingAPI}/" + buildingId + "/staffs",
+            // data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType: "JSON",
+            success: function (response){
+                var row = "";
+                $.each(response.data,function (index,item){
+                    row += "<tr>";
+                    row += '<td class="center"><input type="checkbox" id="checkbox_' + item.staffId + '" value=' + item.staffId + " " + item.checked + '/>' + "</td>";
+                    row += '<td>' + item.fullName + '</td>';
+                    row += "</tr>";
+                });
+                $("#staffList tbody").html(row);
+                console.log("Success");
+            },
+            error: function (response){
+                console.log("Failed");
+                console.log(response);
+            }
         });
     }
 
@@ -344,6 +387,38 @@
 
         $("#listForm").submit();
     });
+
+    function deleteBuilding(buildingId){
+        var buildingId = [buildingId];
+        deleteBuildings(buildingId);
+    }
+
+    $("#btnDeleteBuilding").click(function (e){
+        e.preventDefault();
+        var data = {};
+        var buildingIds = $("#tableList").find("tbody input[type = checkbox]:checked").map(function (){
+            return $(this).val();
+        }).get();
+        deleteBuildings(buildingIds);
+    });
+
+    function deleteBuildings(data){
+        $.ajax({
+            type: "Delete",
+            url: "${buildingAPI}/" + data,
+            data: JSON.stringify(data),
+            contentType: "application/json",
+            dataType: "JSON",
+            success: function (respond){
+                console.log("Success");
+            },
+            error: function (respond){
+                console.log("Failed");
+                console.log(respond);
+            }
+        });
+    }
 </script>
+
 </body>
 </html>

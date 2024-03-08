@@ -48,7 +48,7 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
             for (Field item : fields) {
                 item.setAccessible(true);
                 String fieldName = item.getName();
-                if (!fieldName.equals("staffId") && !fieldName.startsWith("area") && !fieldName.startsWith("rentPrice")) {
+                if (!fieldName.equals("staffId") && !fieldName.startsWith("area") && !fieldName.startsWith("rentPrice") && !fieldName.equals("typeCode")) {
                     Object value = item.get(buildingSearchRequest);
                     if (value != null && !value.equals("")) {
                         if (item.getType().getName().equals("java.lang.Long") || item.getType().getName().equals("java.lang.Integer")) {
@@ -105,8 +105,8 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
             // java8
 //            String code = typeCode.stream().map(item -> "'" + item + "'").collect(Collectors.joining(","));
 //            where.append(" AND rt.code IN(" + code + ") ");
-            String type = typeCode.stream().collect(Collectors.joining(","));
-            where.append(" b.type LIKE " + "'" + type + "' ");
+            String type = typeCode.stream().map(it -> " b.type LIKE '%" + it + "%' ").collect(Collectors.joining(" OR "));
+            where.append(" AND " + type);
         }
 
     }
