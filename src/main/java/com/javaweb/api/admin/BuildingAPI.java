@@ -11,9 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Random;
 
 @RestController(value = "buildingAPIOfAdmin")
 @RequestMapping(value = "/admin/building")
@@ -24,10 +26,9 @@ public class BuildingAPI {
     @Autowired
     AssignmentBuildingService assignmentBuildingService;
     @PostMapping
-    public ResponseEntity<String> addOrUpdateBuilding(@RequestBody BuildingDTO buildingDTO){
+    public void addOrUpdateBuilding(@RequestBody BuildingDTO buildingDTO){
         //Xuống DB để update hoặc thêm mới
         buildingService.addOrUpdate(buildingDTO);
-        return ResponseEntity.ok().header(HttpHeaders.LOCATION, "/admin/building-list").body(null);
     }
 
     @DeleteMapping("/{ids}")

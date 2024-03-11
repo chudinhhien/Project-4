@@ -306,7 +306,7 @@
         data['typeCode'] = typeCode;
         if(typeCode!=""){
             addOrUpdateBuilding(data);
-            window.location.href = "/admin/building-list";
+            window.location.href = "<c:url value="/admin/building-list"/>";
         }else{
             window.location.href = "<c:url value="/admin/building-edit?typeCode=required"/>";
         }
@@ -320,7 +320,7 @@
             data: JSON.stringify(data),
             contentType: "application/json",
             dataType: "JSON",
-            success: function(res){
+            success: function(response){
                 console.log("Success");
             },
             error: function(res){
@@ -330,7 +330,7 @@
         })
     }
     $("#btnCancel").click(function (){
-        window.location.href = "/admin/building-list";
+        window.location.href = "<c:url value="/admin/building-list"/>";
     })
 </script>
 </body>

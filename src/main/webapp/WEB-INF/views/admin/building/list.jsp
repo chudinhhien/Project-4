@@ -10,6 +10,7 @@
 <c:url var="buildingListURL" value = "/admin/building-list" />
 <c:url var="buildingAPI" value="/admin/building" />
 <html>
+
 <head>
     <title>Danh sách tòa nhà</title>
 </head>
@@ -391,6 +392,7 @@
     function deleteBuilding(buildingId){
         var buildingId = [buildingId];
         deleteBuildings(buildingId);
+        window.location.href = "<c:url value="/admin/building-list"/>";
     }
 
     $("#btnDeleteBuilding").click(function (e){
@@ -400,6 +402,7 @@
             return $(this).val();
         }).get();
         deleteBuildings(buildingIds);
+        window.location.href = "<c:url value="/admin/building-list"/>";
     });
 
     function deleteBuildings(data){
