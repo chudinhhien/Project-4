@@ -306,7 +306,7 @@
         data['typeCode'] = typeCode;
         if(typeCode!=""){
             addOrUpdateBuilding(data);
-            window.location.href = "<c:url value="/admin/building-list"/>";
+            <%--window.location.href = "<c:url value="/admin/building-list"/>";--%>
         }else{
             window.location.href = "<c:url value="/admin/building-edit?typeCode=required"/>";
         }
@@ -322,6 +322,7 @@
             dataType: "JSON",
             success: function(response){
                 console.log("Success");
+                window.location.href = "<c:url value="/admin/building-list"/>";
             },
             error: function(res){
                 console.log("Failed");

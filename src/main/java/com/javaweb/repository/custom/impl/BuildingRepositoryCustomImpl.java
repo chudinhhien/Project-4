@@ -20,7 +20,7 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
     public static void joinTable(BuildingSearchRequest buildingSearchRequest, StringBuilder sql) {
         Long staffId = buildingSearchRequest.getStaffId();
         if (staffId != null) {
-            sql.append(" INNER JOIN assignmentbuilding ab ON b.id = ab.id ");
+            sql.append(" INNER JOIN assignmentbuilding ab ON b.id = ab.buildingid ");
         }
 //        List<String> typeCode = buildingSearchRequest.getTypeCode();
 //        if (typeCode != null && typeCode.size() != 0) {

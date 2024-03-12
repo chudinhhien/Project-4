@@ -350,6 +350,7 @@
             dataType: "JSON",
             success: function (respond){
                 console.log("Success");
+                window.location.href = "<c:url value="/admin/building-list"/>";
             },
             error: function (respond){
                 console.log("Failed");
@@ -392,7 +393,6 @@
     function deleteBuilding(buildingId){
         var buildingId = [buildingId];
         deleteBuildings(buildingId);
-        window.location.href = "<c:url value="/admin/building-list"/>";
     }
 
     $("#btnDeleteBuilding").click(function (e){
@@ -402,7 +402,6 @@
             return $(this).val();
         }).get();
         deleteBuildings(buildingIds);
-        window.location.href = "<c:url value="/admin/building-list"/>";
     });
 
     function deleteBuildings(data){
@@ -414,6 +413,7 @@
             dataType: "JSON",
             success: function (respond){
                 console.log("Success");
+                window.location.href = "<c:url value="/admin/building-list"/>";
             },
             error: function (respond){
                 console.log("Failed");
