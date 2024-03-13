@@ -410,7 +410,6 @@
             url: "${buildingAPI}/" + data,
             data: JSON.stringify(data),
             contentType: "application/json",
-            dataType: "JSON",
             success: function (respond){
                 console.log("Success");
                 window.location.href = "<c:url value="/admin/building-list"/>";

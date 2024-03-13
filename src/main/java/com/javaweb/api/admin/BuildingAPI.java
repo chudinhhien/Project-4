@@ -26,9 +26,11 @@ public class BuildingAPI {
     @Autowired
     AssignmentBuildingService assignmentBuildingService;
     @PostMapping
-    public void addOrUpdateBuilding(@RequestBody BuildingDTO buildingDTO){
+    public BuildingDTO addOrUpdateBuilding(@RequestBody BuildingDTO buildingDTO){
+        BuildingDTO response = new BuildingDTO();
         //Xuống DB để update hoặc thêm mới
         buildingService.addOrUpdate(buildingDTO);
+        return response;
     }
 
     @DeleteMapping("/{ids}")
@@ -46,7 +48,9 @@ public class BuildingAPI {
     }
 
     @PostMapping(value = "/assignment")
-    public void updateAssignmentBuilding(@RequestBody AssignmentBuildingDTO assignmentBuildingDTO){
+    public BuildingDTO updateAssignmentBuilding(@RequestBody AssignmentBuildingDTO assignmentBuildingDTO){
+        BuildingDTO buildingDTO = new BuildingDTO();
         assignmentBuildingService.updateAssignmentBuilding(assignmentBuildingDTO);
+        return buildingDTO;
     }
 }
