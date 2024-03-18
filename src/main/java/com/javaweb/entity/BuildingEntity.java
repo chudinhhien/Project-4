@@ -85,10 +85,16 @@ public class BuildingEntity {
     private String managerName;
 
     @Column(name = "managerphone")
-    private String managerphone;
+    private String managerPhone;
 
     @Column(name = "brokeragefee")
     private Long brokerAgeFee;
+
+    @Column(name = "linkofbuilding")
+    private String linkOfBuilding;
+
+    @Column(name = "avatar")
+    private String avatar;
 
     @OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
     private List<AssignmentBuildingEntity> assignmentBuildingEntities = new ArrayList<>();
@@ -236,6 +242,22 @@ public class BuildingEntity {
         return electricityFee;
     }
 
+    public String getManagerPhone() {
+        return managerPhone;
+    }
+
+    public void setManagerPhone(String managerPhone) {
+        this.managerPhone = managerPhone;
+    }
+
+    public String getLinkOfBuilding() {
+        return linkOfBuilding;
+    }
+
+    public void setLinkOfBuilding(String linkOfBuilding) {
+        this.linkOfBuilding = linkOfBuilding;
+    }
+
     public void setElectricityFee(String electricityFee) {
         this.electricityFee = electricityFee;
     }
@@ -296,14 +318,6 @@ public class BuildingEntity {
         this.managerName = managerName;
     }
 
-    public String getmanagerphone() {
-        return managerphone;
-    }
-
-    public void setmanagerphone(String managerphone) {
-        this.managerphone = managerphone;
-    }
-
     public Long getBrokerAgeFee() {
         return brokerAgeFee;
     }
@@ -326,5 +340,13 @@ public class BuildingEntity {
 
     public void setRentAreaEntities(List<RentAreaEntity> rentAreaEntities) {
         this.rentAreaEntities = rentAreaEntities;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }

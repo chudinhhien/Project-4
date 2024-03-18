@@ -38,6 +38,7 @@ public class BuildingConverter {
         List<RentAreaEntity> rentAreas = buildingEntity.getRentAreaEntities();
         String areaResult = rentAreas.stream().map(it -> it.getValue().toString()).collect(Collectors.joining(","));
         building.setRentArea(areaResult);
+        building.setImage(buildingEntity.getAvatar());
         return building;
     }
 
