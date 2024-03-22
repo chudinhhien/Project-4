@@ -126,4 +126,9 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
         Query query = entityManager.createNativeQuery(sql.toString(),BuildingEntity.class);
         return query.getResultList();
     }
+
+    @Override
+    public void deleteByBuildingId(Long id) {
+        entityManager.createNativeQuery("DELETE FROM assignmentbuilding ab WHERE ab.building = " + id);
+    }
 }

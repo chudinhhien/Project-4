@@ -4,27 +4,21 @@ import com.javaweb.model.dto.AssignmentBuildingDTO;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.response.ResponseDTO;
 import com.javaweb.model.response.StaffResponseDTO;
-import com.javaweb.repository.BuildingRepository;
 import com.javaweb.service.AssignmentBuildingService;
 import com.javaweb.service.BuildingService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Random;
 
 @RestController(value = "buildingAPIOfAdmin")
 @RequestMapping(value = "/admin/building")
 public class BuildingAPI {
     @Autowired
     BuildingService buildingService;
-
     @Autowired
     AssignmentBuildingService assignmentBuildingService;
+
     @PostMapping
     public BuildingDTO addOrUpdateBuilding(@RequestBody BuildingDTO buildingDTO){
         BuildingDTO response = new BuildingDTO();

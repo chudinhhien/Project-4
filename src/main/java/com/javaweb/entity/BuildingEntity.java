@@ -1,6 +1,9 @@
 package com.javaweb.entity;
 
 
+import com.sun.corba.se.spi.protocol.CorbaProtocolHandler;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,10 +99,14 @@ public class BuildingEntity {
     @Column(name = "avatar")
     private String avatar;
 
-    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
-    private List<AssignmentBuildingEntity> assignmentBuildingEntities = new ArrayList<>();
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name = "assignmentbuilding",
+            joinColumns = @JoinColumn(name = "buildingid", nullable = false),
+            inverseJoinColumns = @JoinColumn(name = "staffid", nullable = false))
+    private List<UserEntity> staffs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval = true)
+//   @Cascade(value = {org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
     private List<RentAreaEntity> rentAreaEntities = new ArrayList<>();
 
     public Long getId() {
@@ -326,14 +333,6 @@ public class BuildingEntity {
         this.brokerAgeFee = brokerAgeFee;
     }
 
-    public List<AssignmentBuildingEntity> getAssignmentBuildingEntities() {
-        return assignmentBuildingEntities;
-    }
-
-    public void setAssignmentBuildingEntities(List<AssignmentBuildingEntity> assignmentBuildingEntities) {
-        this.assignmentBuildingEntities = assignmentBuildingEntities;
-    }
-
     public List<RentAreaEntity> getRentAreaEntities() {
         return rentAreaEntities;
     }
@@ -348,5 +347,13 @@ public class BuildingEntity {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public List<UserEntity> getStaffs() {
+        return staffs;
+    }
+
+    public void setStaffs(List<UserEntity> staffs) {
+        this.staffs = staffs;
     }
 }

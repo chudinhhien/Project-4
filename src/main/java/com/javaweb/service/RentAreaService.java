@@ -7,8 +7,5 @@ import java.util.List;
 import java.util.Map;
 
 public interface RentAreaService {
-    void deleteAllByBuildingId(List<Long> ids);
-
-    void deleteByBuildingId(Long id);
-    void save(BuildingEntity buildingEntity, String rentArea);
+    BuildingEntity save(BuildingEntity buildingEntity, String rentArea);
 }

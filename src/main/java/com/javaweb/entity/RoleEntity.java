@@ -1,5 +1,7 @@
 package com.javaweb.entity;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +35,7 @@ public class RoleEntity extends BaseEntity {
         this.id = id;
     }
 
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     private List<UserEntity> user = new ArrayList<>();
 
 //    @OneToMany(mappedBy="roles",fetch = FetchType.LAZY)

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface BuildingRepositoryCustom {
     List<BuildingEntity> findAll(BuildingSearchRequest buildingSearchRequest);
+
+    void deleteByBuildingId(Long id);
 }

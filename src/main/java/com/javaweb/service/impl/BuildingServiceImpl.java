@@ -1,7 +1,6 @@
 package com.javaweb.service.impl;
 
 import com.javaweb.converter.BuildingConverter;
-import com.javaweb.entity.AssignmentBuildingEntity;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.entity.UserEntity;
 import com.javaweb.model.dto.BuildingDTO;
@@ -35,9 +34,6 @@ public class BuildingServiceImpl implements BuildingService {
     RentAreaService rentAreaService;
 
     @Autowired
-    AssignmentBuildingServiceImpl assignmentBuildingService;
-
-    @Autowired
     UserRepository userRepository;
 
     @Autowired
@@ -62,22 +58,14 @@ public class BuildingServiceImpl implements BuildingService {
     public void addOrUpdate(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = buildingConverter.toBuildingEntity(buildingDTO);
         saveThumbnail(buildingDTO,buildingEntity);
-        buildingRepository.save(buildingEntity);
         if(!buildingDTO.getRentArea().equals("")){
-            if(buildingDTO.getId()!=null){
-                rentAreaService.deleteByBuildingId(buildingDTO.getId());
-                rentAreaService.save(buildingEntity,buildingDTO.getRentArea());
-            }else{
-                rentAreaService.save(buildingEntity,buildingDTO.getRentArea());
-            }
+            buildingEntity = rentAreaService.save(buildingEntity,buildingDTO.getRentArea());
         }
-
+        buildingRepository.save(buildingEntity);
     }
 
     @Override
     public void deleteAllById(List<Long> ids) {
-        assignmentBuildingService.deleteAllByBuildingId(ids);
-        rentAreaService.deleteAllByBuildingId(ids);
         buildingRepository.deleteAllById_In(ids);
     }
 
@@ -85,13 +73,8 @@ public class BuildingServiceImpl implements BuildingService {
     public List<StaffResponseDTO> listStaffs(Long id) {
         BuildingEntity building = buildingRepository.findById(id).get();
         List<UserEntity> staffs = userRepository.findByStatusAndRoles_Code(1,"STAFF");
-        List<AssignmentBuildingEntity> assignmentBuilding = building.getAssignmentBuildingEntities();
-        List<UserEntity> staffAssignment = new ArrayList<>();
+        List<UserEntity> staffAssignment = building.getStaffs();
 
-        for(AssignmentBuildingEntity it : assignmentBuilding){
-            UserEntity staff = it.getStaff();
-            staffAssignment.add(staff);
-        }
         List<StaffResponseDTO> staffResponseDTOS = new ArrayList<>();
         for(UserEntity it: staffs){
             StaffResponseDTO staffResponseDTO = new StaffResponseDTO();
@@ -105,6 +88,16 @@ public class BuildingServiceImpl implements BuildingService {
             staffResponseDTOS.add(staffResponseDTO);
         }
         return staffResponseDTOS;
+    }
+
+    @Override
+    public void deleteByBuildingId(Long buildingId) {
+        buildingRepository.deleteByBuildingId(buildingId);
+    }
+
+    @Override
+    public void save(BuildingEntity building) {
+        buildingRepository.save(building);
     }
 
     private void saveThumbnail(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {

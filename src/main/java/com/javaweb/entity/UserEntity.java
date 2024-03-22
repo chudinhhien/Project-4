@@ -1,5 +1,7 @@
 package com.javaweb.entity;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,15 +31,20 @@ public class UserEntity extends BaseEntity {
     @Column(name = "email", unique = true)
     private String email;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.REMOVE)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false))
+//    @Cascade(value = {org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
     private List<RoleEntity> roles = new ArrayList<>();
 
 
-    @OneToMany(mappedBy="staff", fetch = FetchType.LAZY)
-    private List<AssignmentBuildingEntity> assignmentBuildingEntities = new ArrayList<>();
+//    @OneToMany(mappedBy="staff", fetch = FetchType.LAZY)
+//    private List<AssignmentBuildingEntity> assignmentBuildingEntities = new ArrayList<>();
+
+    @ManyToMany(mappedBy = "staffs")
+//    @Cascade(value = {org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
+    private List<BuildingEntity> buildings = new ArrayList<>();
 
 //    @OneToMany(mappedBy="users", fetch = FetchType.LAZY)
 //    private List<UserRoleEntity> userRoleEntities = new ArrayList<>();
@@ -45,7 +52,6 @@ public class UserEntity extends BaseEntity {
     public static long getSerialVersionUID() {
         return serialVersionUID;
     }
-
 
     public String getUserName() {
         return userName;
@@ -94,7 +100,7 @@ public class UserEntity extends BaseEntity {
     public void setEmail(String email) {
         this.email = email;
     }
-        @Override
+    @Override
     public Long getId() {
         return id;
     }
@@ -104,11 +110,11 @@ public class UserEntity extends BaseEntity {
         this.id = id;
     }
 
-    public List<AssignmentBuildingEntity> getAssignmentBuildingEntities() {
-        return assignmentBuildingEntities;
+    public List<BuildingEntity> getBuildings() {
+        return buildings;
     }
 
-    public void setAssignmentBuildingEntities(List<AssignmentBuildingEntity> assignmentBuildingEntities) {
-        this.assignmentBuildingEntities = assignmentBuildingEntities;
+    public void setBuildings(List<BuildingEntity> buildings) {
+        this.buildings = buildings;
     }
 }

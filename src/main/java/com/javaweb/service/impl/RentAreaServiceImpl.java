@@ -7,6 +7,7 @@ import com.javaweb.service.RentAreaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,24 +15,19 @@ import java.util.Map;
 public class RentAreaServiceImpl implements RentAreaService {
     @Autowired
     private RentAreaRepository rentAreaRepository;
-    @Override
-    public void deleteAllByBuildingId(List<Long> ids) {
-        rentAreaRepository.deleteAllByBuilding_IdIn(ids);
-    }
 
     @Override
-    public void deleteByBuildingId(Long id) {
-        rentAreaRepository.deleteByBuildingId(id);
-    }
-
-    @Override
-    public void save(BuildingEntity buildingEntity, String rentArea) {
+    public BuildingEntity save(BuildingEntity buildingEntity, String rentArea) {
         String[] rentAreaList = rentArea.split(",");
+        List<RentAreaEntity> rentAreaEntities = new ArrayList<>();
         for(String it : rentAreaList){
             RentAreaEntity rentAreaEntity = new RentAreaEntity();
-            rentAreaEntity.setBuilding(buildingEntity);
             rentAreaEntity.setValue(Long.parseLong(it));
-            rentAreaRepository.save(rentAreaEntity);
+            rentAreaEntity.setBuilding(buildingEntity);
+            rentAreaEntities.add(rentAreaEntity);
         }
+        buildingEntity.setRentAreaEntities(rentAreaEntities);
+        rentAreaRepository.saveAll(rentAreaEntities);
+        return buildingEntity;
     }
 }
