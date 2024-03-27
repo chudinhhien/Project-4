@@ -221,7 +221,7 @@
                                    id="tableList" pagesize="${buildingList.maxPageItems}"
                                    export="false"
                                    class="table table-fcv-ace table-striped table-bordered table-hover dataTable no-footer"
-                                   style="margin: 3em 0 1.5em;">
+                                   style="margin: 3em 0 1.5rem;font-family: 'Times New Roman';font-size: smaller">
                         <!-- Các cột của bảng -->
                         <display:column title="<fieldset class='form-group'>
 												        <input type='checkbox' id='checkAll' class='check-box-element'>
