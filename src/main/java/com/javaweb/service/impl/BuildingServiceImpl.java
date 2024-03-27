@@ -42,7 +42,7 @@ public class BuildingServiceImpl implements BuildingService {
     UploadFileUtils uploadFileUtils;
     @Override
     public List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest, Pageable pageable) {
-        List<BuildingEntity> buildingEntities = buildingRepository.getAllBuildings(pageable);
+        List<BuildingEntity> buildingEntities = buildingRepository.findAll(buildingSearchRequest,pageable);
         List<BuildingSearchResponse> result = new ArrayList<>();
         for(BuildingEntity item : buildingEntities){
             result.add(buildingConverter.toBuildingSearchResponse(item));

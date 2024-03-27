@@ -36,7 +36,7 @@ public class BuildingController {
         //Xuống DB lấy data
         List<BuildingSearchResponse> responseList = buildingService.findAll(buildingSearchRequest,PageRequest.of(buildingSearchRequest.getPage() - 1, buildingSearchRequest.getMaxPageItems()));
         buildingSearchRequest.setListResult(responseList);
-        buildingSearchRequest.setTotalItem(buildingService.countTotalItems());
+        buildingSearchRequest.setTotalItem(responseList.size());
         mav.addObject("buildingList", buildingSearchRequest);
         mav.addObject("listStaffs", userService.getStaffs());
         mav.addObject("districts", DistrictCode.type());
