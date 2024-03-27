@@ -310,7 +310,8 @@
 <script>
     var imageBase64 = '';
     var imageName = '';
-    $('#btnAddOrUpdateBuilding').click(function(){
+    $('#btnAddOrUpdateBuilding').click(function(e){
+        e.preventDefault();
         var data = {};
         var typeCode = [];
         var formData = $('#listForm').serializeArray();

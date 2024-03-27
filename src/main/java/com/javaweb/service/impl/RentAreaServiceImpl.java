@@ -27,7 +27,6 @@ public class RentAreaServiceImpl implements RentAreaService {
             rentAreaEntities.add(rentAreaEntity);
         }
         buildingEntity.setRentAreaEntities(rentAreaEntities);
-        rentAreaRepository.saveAll(rentAreaEntities);
         return buildingEntity;
     }
 }

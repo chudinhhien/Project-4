@@ -6,7 +6,9 @@ import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
 import com.javaweb.service.BuildingService;
 import com.javaweb.service.impl.UserService;
+import com.javaweb.utils.DisplayTagUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -30,9 +32,12 @@ public class BuildingController {
     public ModelAndView buildingList(@ModelAttribute BuildingSearchRequest buildingSearchRequest, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("admin/building/list");
         mav.addObject("modelSearch",buildingSearchRequest);
+        DisplayTagUtils.of(request, buildingSearchRequest);
         //Xuống DB lấy data
-        List<BuildingSearchResponse> responseList = buildingService.findAll(buildingSearchRequest);
-        mav.addObject("buildingList", responseList);
+        List<BuildingSearchResponse> responseList = buildingService.findAll(buildingSearchRequest,PageRequest.of(buildingSearchRequest.getPage() - 1, buildingSearchRequest.getMaxPageItems()));
+        buildingSearchRequest.setListResult(responseList);
+        buildingSearchRequest.setTotalItem(buildingService.countTotalItems());
+        mav.addObject("buildingList", buildingSearchRequest);
         mav.addObject("listStaffs", userService.getStaffs());
         mav.addObject("districts", DistrictCode.type());
         mav.addObject("buildingType", BuildingType.type());

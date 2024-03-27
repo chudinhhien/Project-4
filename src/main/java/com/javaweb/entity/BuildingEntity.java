@@ -99,13 +99,13 @@ public class BuildingEntity {
     @Column(name = "avatar")
     private String avatar;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @ManyToMany(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinTable(name = "assignmentbuilding",
             joinColumns = @JoinColumn(name = "buildingid", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "staffid", nullable = false))
     private List<UserEntity> staffs = new ArrayList<>();
 
-    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval = true)
+    @OneToMany(mappedBy = "building", fetch = FetchType.LAZY,cascade = CascadeType.ALL,orphanRemoval = true)
 //   @Cascade(value = {org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
     private List<RentAreaEntity> rentAreaEntities = new ArrayList<>();
 

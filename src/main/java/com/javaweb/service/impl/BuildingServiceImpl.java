@@ -1,6 +1,7 @@
 package com.javaweb.service.impl;
 
 import com.javaweb.converter.BuildingConverter;
+import com.javaweb.converter.RentAreaConverter;
 import com.javaweb.entity.BuildingEntity;
 import com.javaweb.entity.UserEntity;
 import com.javaweb.model.dto.BuildingDTO;
@@ -13,6 +14,7 @@ import com.javaweb.service.BuildingService;
 import com.javaweb.service.RentAreaService;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.javaweb.utils.UploadFileUtils;
@@ -31,7 +33,7 @@ public class BuildingServiceImpl implements BuildingService {
     BuildingConverter buildingConverter;
 
     @Autowired
-    RentAreaService rentAreaService;
+    RentAreaConverter rentAreaConverter;
 
     @Autowired
     UserRepository userRepository;
@@ -39,8 +41,8 @@ public class BuildingServiceImpl implements BuildingService {
     @Autowired
     UploadFileUtils uploadFileUtils;
     @Override
-    public List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest) {
-        List<BuildingEntity> buildingEntities = buildingRepository.findAll(buildingSearchRequest);
+    public List<BuildingSearchResponse> findAll(BuildingSearchRequest buildingSearchRequest, Pageable pageable) {
+        List<BuildingEntity> buildingEntities = buildingRepository.getAllBuildings(pageable);
         List<BuildingSearchResponse> result = new ArrayList<>();
         for(BuildingEntity item : buildingEntities){
             result.add(buildingConverter.toBuildingSearchResponse(item));
@@ -58,9 +60,7 @@ public class BuildingServiceImpl implements BuildingService {
     public void addOrUpdate(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = buildingConverter.toBuildingEntity(buildingDTO);
         saveThumbnail(buildingDTO,buildingEntity);
-        if(!buildingDTO.getRentArea().equals("")){
-            buildingEntity = rentAreaService.save(buildingEntity,buildingDTO.getRentArea());
-        }
+        buildingEntity.setRentAreaEntities(rentAreaConverter.toRentAreaEntities(buildingDTO.getRentArea(),buildingEntity));
         buildingRepository.save(buildingEntity);
     }
 
@@ -98,6 +98,11 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public void save(BuildingEntity building) {
         buildingRepository.save(building);
+    }
+
+    @Override
+    public int countTotalItems() {
+        return buildingRepository.countTotalItem();
     }
 
     private void saveThumbnail(BuildingDTO buildingDTO, BuildingEntity buildingEntity) {
