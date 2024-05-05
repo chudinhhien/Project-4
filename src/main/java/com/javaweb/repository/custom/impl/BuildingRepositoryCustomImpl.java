@@ -119,7 +119,6 @@ public class BuildingRepositoryCustomImpl implements BuildingRepositoryCustom {
         StringBuilder sql = new StringBuilder(
                 "SELECT b.* FROM building b ");
         joinTable(buildingSearchRequest, sql);
-        System.out.println(sql);
         StringBuilder where = new StringBuilder(" WHERE 1=1 ");
         queryNormal(buildingSearchRequest, where);
         querySpecial(buildingSearchRequest, where);

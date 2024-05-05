@@ -146,13 +146,16 @@
                                                     <label class="name">Điện thoại quản lý</label>
                                                     <input type="text" class="form-control" name="managerphone" value="">
                                                 </div>
-                                                <div class="col-sm-2">
-                                                    <label class="name">Nhân viên phụ trách</label>
-                                                    <form:select class="form-control" path="staffId">
-                                                        <form:option value="">--Chọn nhân viên--</form:option>
-                                                        <form:options items="${listStaffs}"/>
-                                                    </form:select>
-                                                </div>
+                                                <security:authorize access="hasAnyRole('MANAGER','ADMIN')">
+                                                    <div class="col-sm-2">
+                                                        <label class="name">Nhân viên phụ trách</label>
+                                                        <form:select class="form-control" path="staffId">
+                                                            <form:option value="">--Chọn nhân viên--</form:option>
+                                                            <form:options items="${listStaffs}"/>
+                                                        </form:select>
+                                                    </div>
+                                                </security:authorize>
+
                                             </div>
                                         </div>
 
@@ -190,24 +193,26 @@
                             </div>
                         </div>
                     </div>
-                    <div class="pull-right">
-                        <a href="/admin/building-edit">
-                            <button class="btn btn-primary" title="Thêm tòa nhà" style="border: 0;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building-add" viewBox="0 0 16 16">
-                                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0"/>
+                    <security:authorize access="hasAnyRole('ADMIN','MANAGER')">
+                        <div class="pull-right">
+                            <a href="/admin/building-edit">
+                                <button class="btn btn-primary" title="Thêm tòa nhà" style="border: 0;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building-add" viewBox="0 0 16 16">
+                                        <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m.5-5v1h1a.5.5 0 0 1 0 1h-1v1a.5.5 0 0 1-1 0v-1h-1a.5.5 0 0 1 0-1h1v-1a.5.5 0 0 1 1 0"/>
+                                        <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"/>
+                                        <path d="M4.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
+                                    </svg>
+                                </button>
+                            </a>
+                            <button class="btn btn-danger" title="Xóa tòa nhà" style="border: 0;" id="btnDeleteBuilding">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building-dash" viewBox="0 0 16 16">
+                                    <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1"/>
                                     <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"/>
                                     <path d="M4.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
                                 </svg>
                             </button>
-                        </a>
-                        <button class="btn btn-danger" title="Xóa tòa nhà" style="border: 0;" id="btnDeleteBuilding">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-building-dash" viewBox="0 0 16 16">
-                                <path d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M11 12h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1 0-1"/>
-                                <path d="M2 1a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6.5a.5.5 0 0 1-1 0V1H3v14h3v-2.5a.5.5 0 0 1 .5-.5H8v4H3a1 1 0 0 1-1-1z"/>
-                                <path d="M4.5 2a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm-6 3a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm3 0a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5z"/>
-                            </svg>
-                        </button>
-                    </div>
+                        </div>
+                    </security:authorize>
                 </div>
             </div>
 
@@ -247,15 +252,25 @@
                         <!-- Cột thao tác -->
                         <display:column title="Thao tác">
                             <div class="hidden-sm hidden-xs btn-group">
-                                <button class="btn btn-xs btn-success" title="Giao tòa nhà" onclick="assignmentBuilding(${tableList.id})">
-                                    <i class="ace-icon glyphicon glyphicon-align-justify"></i>
-                                </button>
-                                <a class="btn btn-xs btn-info" title="Sửa tòa nhà" href="/admin/building-edit-${tableList.id}">
-                                    <i class="ace-icon fa fa-pencil bigger-120"></i>
-                                </a>
-                                <button class="btn btn-xs btn-danger" title="Xóa tòa nhà" onclick="deleteBuilding(${tableList.id})">
-                                    <i class="ace-icon fa fa-trash-o bigger-120"></i>
-                                </button>
+                                <security:authorize access="hasAnyRole('ADMIN','MANAGER')">
+                                    <button class="btn btn-xs btn-success" title="Giao tòa nhà" onclick="assignmentBuilding(${tableList.id})">
+                                        <i class="ace-icon glyphicon glyphicon-align-justify"></i>
+                                    </button>
+                                </security:authorize>
+
+                                    <a class="btn btn-xs btn-info" title="Sửa tòa nhà" href="/admin/building-edit-${tableList.id}">
+                                        <security:authorize access="hasRole('STAFF')">
+                                            <i class="ace-icon fa fa-eye bigger-120"></i>
+                                        </security:authorize>
+                                        <security:authorize access="hasAnyRole('ADMIN','MANAGER')">
+                                            <i class="ace-icon fa fa-pencil bigger-120"></i>
+                                        </security:authorize>
+                                    </a>
+                                <security:authorize access="hasAnyRole('ADMIN','MANAGER')">
+                                    <button class="btn btn-xs btn-danger" title="Xóa tòa nhà" onclick="deleteBuilding(${tableList.id})">
+                                        <i class="ace-icon fa fa-trash-o bigger-120"></i>
+                                    </button>
+                                </security:authorize>
                             </div>
                         </display:column>
                         </display:table>
@@ -330,7 +345,6 @@
 <!-- Modal -->
 <div class="modal fade" id="assignmentBuildingModal" role="dialog" style="font-family: 'Times New Roman', Times, serif;">
     <div class="modal-dialog">
-
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -347,18 +361,6 @@
                     </thead>
 
                     <tbody>
-<%--                    <tr>--%>
-<%--                        <td class="center">--%>
-<%--                            <input type="checkbox" id="checkbox_1" value="1" checked>--%>
-<%--                        </td>--%>
-<%--                        <td>Nguyen Van A</td>--%>
-<%--                    </tr>--%>
-<%--                    <tr>--%>
-<%--                        <td class="center">--%>
-<%--                            <input type="checkbox" id="checkbox_2" value="2" checked>--%>
-<%--                        </td>--%>
-<%--                        <td>Nguyen Van B</td>--%>
-<%--                    </tr>--%>
                     </tbody>
                 </table>
                 <input type="hidden" id="buildingId" name="buildingId" value="">
@@ -439,16 +441,19 @@
 
     function deleteBuilding(buildingId){
         var buildingId = [buildingId];
-        deleteBuildings(buildingId);
+        showAlertBeforeDelete(function() {
+            deleteBuildings(buildingId);
+        });
     }
 
     $("#btnDeleteBuilding").click(function (e){
         e.preventDefault();
-        var data = {};
         var buildingIds = $("#tableList").find("tbody input[type = checkbox]:checked").map(function (){
             return $(this).val();
         }).get();
-        deleteBuildings(buildingIds);
+        showAlertBeforeDelete(function() {
+            deleteBuildings(buildingIds);
+        });
     });
 
     function deleteBuildings(data){

@@ -4,6 +4,7 @@ import com.javaweb.enums.DistrictCode;
 import com.javaweb.model.dto.BuildingDTO;
 import com.javaweb.model.request.BuildingSearchRequest;
 import com.javaweb.model.response.BuildingSearchResponse;
+import com.javaweb.security.utils.SecurityUtils;
 import com.javaweb.service.BuildingService;
 import com.javaweb.service.impl.UserService;
 import com.javaweb.utils.DisplayTagUtils;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller(value="buildingControllerOfAdmin")
@@ -32,9 +34,14 @@ public class BuildingController {
     public ModelAndView buildingList(@ModelAttribute BuildingSearchRequest buildingSearchRequest, HttpServletRequest request){
         ModelAndView mav = new ModelAndView("admin/building/list");
         mav.addObject("modelSearch",buildingSearchRequest);
-        DisplayTagUtils.of(request, buildingSearchRequest);
         //Xuống DB lấy data
-        List<BuildingSearchResponse> responseList = buildingService.findAll(buildingSearchRequest,PageRequest.of(buildingSearchRequest.getPage() - 1, buildingSearchRequest.getMaxPageItems()));
+        List<BuildingSearchResponse> responseList = new ArrayList<>();
+        if(SecurityUtils.getAuthorities().contains("ROLE_STAFF")){
+            Long staffId = SecurityUtils.getPrincipal().getId();
+            buildingSearchRequest.setStaffId(staffId);
+        }
+        DisplayTagUtils.of(request, buildingSearchRequest);
+        responseList = buildingService.findAll(buildingSearchRequest,PageRequest.of(buildingSearchRequest.getPage() - 1, buildingSearchRequest.getMaxPageItems()));
         buildingSearchRequest.setListResult(responseList);
         buildingSearchRequest.setTotalItem(responseList.size());
         mav.addObject("buildingList", buildingSearchRequest);

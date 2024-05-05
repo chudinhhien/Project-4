@@ -18,8 +18,6 @@ import java.util.List;
 @Transactional
 public class AssignmentBuildingServiceImpl implements AssignmentBuildingService {
     @Autowired
-    private BuildingService buildingService;
-    @Autowired
     private BuildingRepository buildingRepository;
     @Autowired
     private UserRepository userRepository;

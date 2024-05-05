@@ -59,6 +59,10 @@ public class BuildingServiceImpl implements BuildingService {
     @Override
     public void addOrUpdate(BuildingDTO buildingDTO) {
         BuildingEntity buildingEntity = buildingConverter.toBuildingEntity(buildingDTO);
+        if(buildingDTO.getId()!=null){
+            BuildingEntity building = buildingRepository.findById(buildingDTO.getId()).get();
+            buildingEntity.setStaffs(building.getStaffs());
+        }
         saveThumbnail(buildingDTO,buildingEntity);
         buildingEntity.setRentAreaEntities(rentAreaConverter.toRentAreaEntities(buildingDTO.getRentArea(),buildingEntity));
         buildingRepository.save(buildingEntity);

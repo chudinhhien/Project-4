@@ -35,19 +35,18 @@ public class UserEntity extends BaseEntity {
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", nullable = false),
             inverseJoinColumns = @JoinColumn(name = "role_id", nullable = false))
-//    @Cascade(value = {org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
     private List<RoleEntity> roles = new ArrayList<>();
 
 
-//    @OneToMany(mappedBy="staff", fetch = FetchType.LAZY)
-//    private List<AssignmentBuildingEntity> assignmentBuildingEntities = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "staffs")
-//    @Cascade(value = {org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
+    @ManyToMany(mappedBy = "staffs",fetch = FetchType.LAZY)
     private List<BuildingEntity> buildings = new ArrayList<>();
 
-//    @OneToMany(mappedBy="users", fetch = FetchType.LAZY)
-//    private List<UserRoleEntity> userRoleEntities = new ArrayList<>();
+    @ManyToMany(mappedBy = "staffs",fetch = FetchType.LAZY)
+    private List<CustomerEntity> customers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "staff",fetch = FetchType.LAZY)
+    private List<TransactionEntity> transactionEntities = new ArrayList<>();
 
     public static long getSerialVersionUID() {
         return serialVersionUID;
@@ -116,5 +115,21 @@ public class UserEntity extends BaseEntity {
 
     public void setBuildings(List<BuildingEntity> buildings) {
         this.buildings = buildings;
+    }
+
+    public List<TransactionEntity> getTransactionEntities() {
+        return transactionEntities;
+    }
+
+    public void setTransactionEntities(List<TransactionEntity> transactionEntities) {
+        this.transactionEntities = transactionEntities;
+    }
+
+    public List<CustomerEntity> getCustomers() {
+        return customers;
+    }
+
+    public void setCustomers(List<CustomerEntity> customers) {
+        this.customers = customers;
     }
 }

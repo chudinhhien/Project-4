@@ -33,7 +33,12 @@
 
             <div class="page-header">
                 <h1>
-                    Sửa hoặc thêm tòa nhà
+                    <security:authorize access="hasAnyRole('ADMIN','MANAGER')">
+                        Sửa hoặc thêm tòa nhà
+                    </security:authorize>
+                    <security:authorize access="hasAnyRole('STAFF')">
+                        Thông tin chi tiết tòa nhà
+                    </security:authorize>
                     <small>
                         <i class="ace-icon fa fa-angle-double-right"></i>
                         overview &amp; stats
@@ -271,7 +276,9 @@
 
                         <div class="form-group">
                             <label class="col-sm-3 no-padding-right">Hình đại diện</label>
-                            <input class="col-sm-3 no-padding-right" type="file" id="uploadImage"/>
+                            <security:authorize access="hasAnyRole('ADMIN','MANAGER')">
+                                <form:input class="col-sm-3 no-padding-right" type="file" id="uploadImage" path="image"/>
+                            </security:authorize>
                             <div class="col-sm-9">
                                 <c:if test="${not empty buildingEdit.image}">
                                     <c:set var="imagePath" value="/repository${buildingEdit.image}"/>
@@ -289,8 +296,13 @@
                             <label class="col-xs-3"></label>
                             <div class="col-xs-9">
                                 <c:if test="${not empty buildingEdit.id}" >
-                                    <button type="button" class="btn btn-primary" id="btnAddOrUpdateBuilding">Cập nhật tòa nhà</button>
-                                    <button type="button" class="btn btn-danger" id="btnCancel">Hủy thao tác</button>
+                                    <security:authorize access="hasRole('STAFF')">
+                                        <button type="button" class="btn btn-group" id="btnCancel">Quay về trang chủ</button>
+                                    </security:authorize>
+                                    <security:authorize access="hasAnyRole('MANAGER','ADMIN')">
+                                        <button type="button" class="btn btn-primary" id="btnAddOrUpdateBuilding">Cập nhật tòa nhà</button>
+                                        <button type="button" class="btn btn-danger" id="btnCancel">Hủy thao tác</button>
+                                    </security:authorize>
                                 </c:if>
                                 <c:if test="${empty buildingEdit.id}" >
                                     <button type="button" class="btn btn-primary" id="btnAddOrUpdateBuilding">Thêm mới</button>
