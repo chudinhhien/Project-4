@@ -18,6 +18,9 @@ public class TransactionConverter {
     public TransactionDTO toTransactionDTO(TransactionEntity transactionEntity){
         TransactionDTO result = modelMapper.map(transactionEntity,TransactionDTO.class);
         result.setCreatedDate(dateUtils.parseDateFormat(transactionEntity.getCreatedDate(),"dd/MM/yyyy"));
+        if(transactionEntity.getModifiedDate()!=null){
+            result.setModifiedDate(dateUtils.parseDateFormat(transactionEntity.getModifiedDate(),"dd/MM/yyyy"));
+        }
         return result;
     }
 }

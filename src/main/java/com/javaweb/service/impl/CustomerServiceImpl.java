@@ -30,6 +30,10 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void addCustomer(CustomerDTO customerDTO) {
         CustomerEntity customerEntity = customerConverter.toCustomerEntity(customerDTO);
+        if(customerDTO.getId()!=null){
+            CustomerEntity customer = customerRepository.findById(customerDTO.getId()).get();
+            customerEntity.setStaffs(customer.getStaffs());
+        }
         customerRepository.save(customerEntity);
     }
 

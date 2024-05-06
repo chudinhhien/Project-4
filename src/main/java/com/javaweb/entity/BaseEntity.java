@@ -29,11 +29,9 @@ public class BaseEntity implements Serializable {
     private String createdBy;
 
     @Column(name = "modifieddate")
-    @LastModifiedDate
     private Date modifiedDate;
 
     @Column(name = "modifiedby")
-    @LastModifiedBy
     private String modifiedBy;
 
     public Long getId() {

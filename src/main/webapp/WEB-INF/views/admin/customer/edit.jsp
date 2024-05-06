@@ -137,6 +137,8 @@
                                        name="CSKH">
                             <display:column title="Ngày tạo" property="createdDate"/>
                             <display:column title="Người tạo" property="createdBy"/>
+                            <display:column title="Ngày sửa" property="modifiedDate"/>
+                            <display:column title="Người sửa" property="modifiedBy"/>
                             <display:column title="Chi tiết giao dịch" property="note"/>
                             <display:column title="Thao tác">
                                 <div class="hidden-sm hidden-xs btn-group">
@@ -156,6 +158,8 @@
                                        name="DDX">
                             <display:column title="Ngày tạo" property="createdDate"/>
                             <display:column title="Người tạo" property="createdBy"/>
+                            <display:column title="Ngày sửa" property="modifiedDate"/>
+                            <display:column title="Người sửa" property="modifiedBy"/>
                             <display:column title="Chi tiết giao dịch" property="note"/>
                             <display:column title="Thao tác">
                                 <div class="hidden-sm hidden-xs btn-group">
@@ -247,6 +251,7 @@
         $('#code').val(code);
         $('#note').val("");
         $('#customerId').val(customerId);
+        $('#id').val("");
         $('#addOrUpdateTransaction').modal('show');
     }
 
@@ -302,7 +307,7 @@
                 console.log(res.statusText);
             }
         })
-    } 
+    }
 </script>
 </body>
 </html>

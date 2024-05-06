@@ -9,27 +9,32 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class TransactionUtils {
     @Autowired
     private TransactionConverter transactionConverter;
     public List<TransactionDTO> filterTrans(List<TransactionEntity> transactionEntities, String value) {
-        List<TransactionDTO> result = new ArrayList<>();
         if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
             Long staffId = SecurityUtils.getPrincipal().getId();
-            for (TransactionEntity item : transactionEntities) {
-                if (item.getCode().equals(value) && item.getStaff().getId().equals(staffId)) {
-                    result.add(transactionConverter.toTransactionDTO(item));
-                }
-            }
+            return transactionEntities.stream()
+                    .filter(item -> filterByStaffAndCode(item, value, staffId))
+                    .map(transactionConverter::toTransactionDTO)
+                    .collect(Collectors.toList());
         } else {
-            for (TransactionEntity item : transactionEntities) {
-                if (item.getCode().equals(value)) {
-                    result.add(transactionConverter.toTransactionDTO(item));
-                }
-            }
+            return transactionEntities.stream()
+                    .filter(item -> filterByCode(item, value))
+                    .map(transactionConverter::toTransactionDTO)
+                    .collect(Collectors.toList());
         }
-        return result;
+    }
+
+    private boolean filterByStaffAndCode(TransactionEntity item, String value, Long staffId) {
+        return item.getStaff() != null && item.getCode().equals(value) && item.getStaff().getId() == staffId;
+    }
+
+    private boolean filterByCode(TransactionEntity item, String value) {
+        return item.getCode().equals(value);
     }
 }
