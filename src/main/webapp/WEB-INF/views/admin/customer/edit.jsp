@@ -229,7 +229,6 @@
             dataType: "JSON",
             success: function(response){
                 console.log("Success");
-                showAlert("success", "Thêm khách hàng thành công!");
                 window.location.href = "/admin/customer-list";
             },
             error: function(res){
@@ -296,25 +295,14 @@
             dataType: "JSON",
             success: function(response){
                 console.log("Success");
-                showAlertAndRedirect("Cập nhật thành công!", "/admin/customer-edit-" + data["customerId"]);
+                window.location.href = "/admin/customer-edit-" + data["customerId"];
             },
             error: function(res){
                 console.log("Failed");
                 console.log(res.statusText);
             }
         })
-    }
-
-    function showAlert(type, message){
-        // Xây dựng HTML cho thông báo
-        var alertHTML = '<div class="alert alert-' + type + ' alert-dismissible fade show" role="alert">' +
-            message +
-            '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>' +
-            '</div>';
-        // Thêm HTML vào trang
-        $('#alertContainer').append(alertHTML);
-    }
+    } 
 </script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
