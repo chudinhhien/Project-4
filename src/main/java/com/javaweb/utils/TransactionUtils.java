@@ -16,24 +16,11 @@ public class TransactionUtils {
     @Autowired
     private TransactionConverter transactionConverter;
     public List<TransactionDTO> filterTrans(List<TransactionEntity> transactionEntities, String value) {
-        if (SecurityUtils.getAuthorities().contains("ROLE_STAFF")) {
-            Long staffId = SecurityUtils.getPrincipal().getId();
-            return transactionEntities.stream()
-                    .filter(item -> filterByStaffAndCode(item, value, staffId))
-                    .map(transactionConverter::toTransactionDTO)
-                    .collect(Collectors.toList());
-        } else {
-            return transactionEntities.stream()
-                    .filter(item -> filterByCode(item, value))
-                    .map(transactionConverter::toTransactionDTO)
-                    .collect(Collectors.toList());
-        }
+        return transactionEntities.stream()
+                .filter(item -> filterByCode(item, value))
+                .map(transactionConverter::toTransactionDTO)
+                .collect(Collectors.toList());
     }
-
-    private boolean filterByStaffAndCode(TransactionEntity item, String value, Long staffId) {
-        return item.getStaff() != null && item.getCode().equals(value) && item.getStaff().getId() == staffId;
-    }
-
     private boolean filterByCode(TransactionEntity item, String value) {
         return item.getCode().equals(value);
     }
