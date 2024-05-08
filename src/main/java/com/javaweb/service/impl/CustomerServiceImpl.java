@@ -16,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -33,6 +35,10 @@ public class CustomerServiceImpl implements CustomerService {
         if(customerDTO.getId()!=null){
             CustomerEntity customer = customerRepository.findById(customerDTO.getId()).get();
             customerEntity.setStaffs(customer.getStaffs());
+            customerEntity.setCreatedDate(customer.getCreatedDate());
+            customerEntity.setModifiedBy(SecurityUtils.getPrincipal().getFullName());
+            customerEntity.setModifiedDate(new Date());
+            customerEntity.setCreatedBy(customer.getCreatedBy());
         }
         customerRepository.save(customerEntity);
     }
